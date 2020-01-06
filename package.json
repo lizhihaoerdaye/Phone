@@ -1,0 +1,17 @@
+{
+  "name": "myapp",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "packager": "electron-packager . app --win--out myapp ---arch=x64 --electron-version=5.0.1 --overwrite",
+    "test": "electron-packager . app --win --out OutApp --arch=x64 --electron-version=5.0.1 --overwrite --icon=icon.ioc"
+  },
+  "devDependencies": {
+    "electron": "^5.0.1"
+  },
+  "dependencies": {
+    "electron-packager": "^13.1.1",
+    "ws": "^7.0.0"
+  }
+}

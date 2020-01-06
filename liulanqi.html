@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>lulanqi</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+</head>
+
+<body>
+    
+    <input type="text" id="inputone">
+    <input  type="password" id="inputtow">
+    <button id="but">登录</button>
+    <p id="notConnected"></p>
+    <script>
+        var inputone = document.getElementById('inputone')
+        var inputtow = document.getElementById('inputtow')
+        var pone = document.getElementById('notConnected')
+        var but = document.getElementById('but')
+        
+        var ws = null
+        but.addEventListener('click', function () {
+            var obj = {}
+            // login()
+            //推送用户信息
+            
+        })
+
+        function createWebsocket() {
+            try {
+                if ('WebSocket' in window) {
+                    ws = new WebSocket("ws://localhost:8888")
+                    init()
+                } else {
+                    alert("不支持websocket")
+                }
+            } catch (e) {
+                console.log("catch")
+                reconnect();
+            }
+        };
+
+        function init() {
+            //建立连接
+            ws.onerror = function () {
+                console.log("error");
+                reconnect();
+            };
+            ws.onopen = function (e) {
+                console.log('与服务连接');
+                pone.innerHTML = ''
+                heartCheck.start();
+                const messageFile = {};
+                messageFile.type = "lianJieOk";
+                messageFile.message = "连接ok";
+                ws.send(JSON.stringify(messageFile))
+            };
+            //收到消息处理
+            ws.onmessage = function (e) {
+                var data = JSON.parse(e.data)
+                
+                if (data.message === undefined) return;
+
+                if(data.type === "nihao"){
+                    heartCheck.start();
+                }
+                if(data.type === "qudongpanduan"){
+                    pone.innerHTML = data.message;
+                }
+                if(data.type === "lianjianhezi"){
+                    pone.innerHTML = data.message;
+                }
+                if(data.type === "lianjieyes"){
+                    pone.innerHTML = " ";
+                };
+            };
+
+            ws.onclose = function (e) {
+                console.log("应用程序以关闭");
+                pone.innerHTML = '请打开软话机'
+                reconnect()
+            }
+            //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+            ws.onbeforeunload = function () {
+                closeWebsocket();
+            }
+        }
+        function closeWebsocket() {
+            ws.close();
+        }
+        //重连方法
+        var rebinding
+        var lockReconnect = false
+        function reconnect() {
+            if (lockReconnect) {
+                return;
+            }
+            lockReconnect = true;
+            if (rebinding) {
+                clearTimeout(rebinding)
+            }
+            rebinding = setTimeout(function () {
+                createWebsocket();
+                lockReconnect = false
+            }, 4000)
+        }
+        //网络不好的情况
+        var heartCheck = {
+            timeout: 3000, //每隔三秒发送心跳
+            severTimeout: 5000,  //服务端超时时间
+            timeoutObj: null,
+            serverTimeoutObj: null,
+            start: function () {
+                var objnull = {};
+                var _this = this;
+
+                if (this.timeoutObj) {
+                    clearTimeout(this.timeoutObj);
+                }
+                if (this.serverTimeoutObj) {
+                    clearTimeout(this.serverTimeoutObj);
+                }
+                this.timeoutObj = setTimeout(function () {
+                    //这里发送一个心跳，后端收到后，返回一个心跳消息，
+                    //onmessage拿到返回的心跳就说明连接正常
+                    objnull.type = "nihao"
+                    objnull.message = "xintiao"
+                    ws.send(JSON.stringify(objnull)); // 心跳发给服务的消息
+                    //计算答复的超时时间 5秒钟没有收到心跳返回的消息后就关闭连接;重新连接
+                    _this.serverTimeoutObj = setTimeout(function () {
+                        console.log('guanbi')
+                        ws.close();
+                    }, _this.severTimeout);
+                }, this.timeout)
+            }
+        }
+        createWebsocket();
+        //登录
+//         function login() {
+//         var loginName = inputone.value;
+//         var password = inputtow.value;
+// 	    var date = new Date();
+//         if (loginName != null && loginName.length > 0 && password != null && loginName.length > 0) {
+
+//       $.ajax({
+//         type: "POST",
+//         url: "http://cdr.qijiee.com:40010/users/login",
+//         contentType: "application/json; charset=utf-8",
+//         data: JSON.stringify({
+//           loginName: loginName,
+//           password: password
+//         }),
+//         dataType: "json",
+//         success: function(result) {
+         
+//           if (result.status === "ok") {
+//             localStorage.setItem("loginName", result.loginName); //wuzy@tt
+//             localStorage.setItem("loginTime", formatDate(date)); //2019年05月20
+//             localStorage.setItem("userUuid", result.userUuid); //1016197099332702208
+//             localStorage.setItem("comUuid", result.comUuid); //	998381365835730944
+//             localStorage.setItem("userName", result.userName);//姓名
+//             localStorage.setItem("callNum", result.callNum);//351003
+//             // ano = result.callNum;
+//             // dn = result.userUuid;
+//           } else {
+//             alert("用户名密码错误");
+//           }
+//         },
+//         error: function(message) {
+// 			console.log(message);
+//           alert("登录失败");
+//         }
+//       });
+//     } else {
+//       alert("用户名、密码不能为空");
+
+//     }
+//   }
+  //时间转换
+  function formatDate(date) {
+    var myyear = date.getFullYear();
+    var mymonth = date.getMonth() + 1;
+    var myweekday = date.getDate();
+ 
+    if (mymonth < 10) {
+        mymonth = "0" + mymonth;
+    }
+    if (myweekday < 10) {
+        myweekday = "0" + myweekday;
+    }
+    return (myyear + "年" + mymonth + "月" + myweekday + "日");
+}
+
+    </script>
+</body>
+
+</html>

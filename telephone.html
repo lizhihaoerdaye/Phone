@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>phone</title>
+    <link rel="stylesheet" type="text/css" href="jianbianse.css">
+    <script type="text/javascript">
+        if (typeof module === 'object') {
+            window.module = module;
+            module = undefined;
+        }
+    </script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="moment.min.js"></script>
+    <script type="text/javascript" src="messagetype.js"></script>
+    <script type="text/javascript">
+        if (window.module) module = window.module;
+    </script>
+</head>
+<body >
+    <div class="ling">
+    <div class="yi">
+    <div class="er">
+    <div class="san">
+    <div class="si">
+    <div class="wu">
+    <div class="liu">
+    <div class="qi">
+    <div class="ba">
+    <div class="jiu">
+    <div class="shi">
+    <div class="shiyi">
+       <div class="drive">
+        <span class="qudong"></span>
+        <span class="anzhuang">未登录  <a href="https://crm.aimengyx.com/login" target="_blank">请登录</a></span>
+       </div>
+        <div class="xian"><span class="zuixiaohua"></span></div>
+        <div class="screen">
+            <div class="phone-tab-contents">
+                <!-- 拨号盘 -->
+                <div class="tab phone">
+                    <div class="number-area">
+                        <input type="text" class="numbers" id="text1" onkeyup="this.value=this.value.replace(/\s+/g,'')">
+                        <a class="delete-btn" id="btn"></a>
+                    </div>
+                    <div class="number-container">
+                            <span class="pushed1" id="shuZi1">1</span>
+                            <span class="pushed2" id="shuZi2">2</span>
+                            <span class="pushed3" id="shuZi3">3</span>
+                            <span class="pushed4" id="shuZi4">4</span>
+                            <span class="pushed5" id="shuZi5">5</span>
+                            <span class="pushed6" id="shuZi6">6</span>
+                            <span class="pushed7" id="shuZi7">7</span>
+                            <span class="pushed8" id="shuZi8">8</span>
+                            <span class="pushed9" id="shuZi9">9</span>
+                            <span class="pushedasterisk fff" id="xingHao">*</span>
+                            <span class="pushed0" id="shuZi0">0</span>
+                            <span class="pushednumber fff" id="jingHao">#</span>
+                    </div>
+                    <div class="call-but"></div>
+                </div>
+                <!-- 存储电话记录 -->
+                <div class="tab clock">
+                        <div class="all">
+                            <div class="all-left">最近通话</div>
+                            <div class="all-right">
+                                <div class="rightul">
+                                    <div class="suoyou beijing">所有</div>
+                                    <div class="weijie">未接</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 所有 -->
+                        <div class="callRecords one">
+                            <div class="telListBox" id="telListBox">
+                          
+                            </div>
+                            
+                        </div>
+                        <!-- 未接 -->
+                        <div class="callRecords tow">
+                            <div class="telListBox" id="telListBoxweijie">
+                            </div>
+                        </div>
+
+                </div>
+            </div>
+            <!-- 导航 -->
+            <ul class="phone-tabs">
+                <li><span class="getphone getphoneBlue"></span></li>
+                <li><span class="getclock getclockGray"></span></li>
+            </ul>
+        </div>
+        			<!-- 正在拨号界面 -->
+			<div class="screen jtym" id="jtymOne">
+            <div class="bhzhuangtai">
+				<div class="bohao dianhua"></div>
+				<div class="bohao state" id="message"></div>
+				<div class="bohao who">
+					<p class="p1">1111</p>
+					<p class="p2">1111</p>
+				</div>
+				<ul class="bohao anniu">
+                    <li><span class="mianti"></span></li>
+					<li><span class="fenhao"></span></li>
+                    <li><span class="luying"></span></li>
+                </ul>
+                <div class="allyingliang">    
+                    <div class="bar">
+                        <div class="box"></div>
+                    </div>
+                </div>
+                <div class="allyingliangtow">    
+                    <div class="bar">
+                        <div class="box"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="baoHaoPan2" >
+                    <div class="number-area">
+                        <input type="text" class="number" id="text2">
+                    </div>
+                    <div class="numbers-container">
+                        <span class="pushed1" id="jp1">1</span>
+                        <span class="pushed2" id="jp2">2</span>
+                        <span class="pushed3" id="jp3">3</span>
+                        <span class="pushed4" id="jp4">4</span>
+                        <span class="pushed5" id="jp5">5</span>
+                        <span class="pushed6" id="jp6">6</span>
+                        <span class="pushed7" id="jp7">7</span>
+                        <span class="pushed8" id="jp8">8</span>
+                        <span class="pushed9" id="jp9">9</span>
+                        <span class="pushedasterisk fff" id="nianqing">*</span>
+                        <span class="pushed0" id="jp0">0</span>
+                        <span class="pushednumber fff" id="nianlao">#</span>
+                    </div>
+            </div>
+            
+            <div class="dingwei">
+                <div class="quxiao">
+                </div>
+                <div class="yingchang">隐藏</div>
+            </div>
+
+
+            </div>
+
+            <!-- 来电页面 -->
+            <div id="jtymTow" class="screen ldym">
+                <div class="portrait" id="laiDian"></div>
+               
+                    <div class="record"><span></span></div>
+                    <div class="handsFree"><span></span></div>
+
+                <div class="weizhi">
+                    <div id="green" class="answerThePhone"><i class="icon jieting"></i></div>
+                    <div id="red" class="hangUpThePhone"><i class="icon guaduan"></i></div>
+                </div>
+            </div>
+ 
+    </div>
+    </div> 
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div> 
+</body>
+
+<script src="socket.js"></script>
+<script text="javascript" src="jianbianse.js"></script>
+</html>

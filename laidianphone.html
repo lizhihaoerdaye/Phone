@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>callphone</title>
+    <style>
+        *{
+            margin: 0;padding: 0;
+        }
+        .laidian{width: 270px;height: 270px;margin: 0 auto;background:rgba(0, 0, 0, 0.8);position: relative; cursor: pointer;color: #fff;}
+        .laidian .theContact{
+            display: block;
+            position: absolute;
+            top: 19px;
+            left: 14px;
+            font-family: Arial;
+            font-size: 16px;
+        }
+        .laidian .shutDown{
+            position: absolute;
+            display: block;
+            width: 11px;
+            height: 11px;
+            background: url(img/×.png);
+            background-repeat: no-repeat;
+            background-position: center center;
+            padding: 25px 14px;
+            right: 0;
+        }
+        .laidian .poto{
+            position: absolute;
+            width: 73px;
+            height: 73px;
+            left: 50%;
+            top:50%;
+            margin-left: -36px;
+            margin-top: -36px;
+            background: url(img/电话.png);
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+        .laidian .answerAndHangup{ position: absolute;left: 50%;margin-left:-90px;bottom: 30px;  overflow: hidden;}
+        .answerAndHangup li{width: 74px;height: 30px; float: left;list-style: none;margin: 0 8px;font-family:"Microsoft YaHei";font-size: 14px;line-height: 30px;text-align: center;}
+        .answerAndHangup .answer{background-color: #1aac19;}
+        .answerAndHangup .hangUp{background-color: #ee5852;}
+    </style>
+</head>
+<body>
+    <div class="laidian">
+            <span class="theContact"></span>
+            <span class="shutDown"></span>
+            <div class="poto"></div>
+            <ul class="answerAndHangup">
+                <li class="answer">接听</li>
+                <li class="hangUp">挂断</li>
+            </ul>
+    </div>
+    <script>
+     const guaDuan = document.getElementsByClassName('hangUp')[0]
+     const jieTong = document.getElementsByClassName('answer')[0]
+     const laidian = document.getElementsByClassName('theContact')[0]
+     const shutDown = document.getElementsByClassName('shutDown')[0]
+	 const BrowserWindow = require('electron').remote.BrowserWindow
+     const ipc = require('electron').ipcRenderer
+     ipc.on('xuanRan-xinchuangkou',(event,numer,windowID)=>{
+				 laidian.textContent = numer
+				 const result = panDuan(numer)
+				 const results =  jie(numer)
+				 //返回一个给定的id窗口
+				 const fromWindow = BrowserWindow.fromId(windowID)
+
+                 guaDuan.addEventListener('click',function(){					
+						 fromWindow.webContents.send('xinchuangkou-xuanRan',numer,result)
+				 window.close()
+              })
+              jieTong.addEventListener('click',function(){
+					 fromWindow.webContents.send('xinchuangkou-xuanRan',numer,results)
+					window.close()
+			  })
+			  
+             })
+     shutDown.addEventListener('click',function(){
+         console.log(1)
+        window.close()
+     })
+			 function panDuan(num){
+				return (num+'点击了挂断')
+			 }
+			 function jie(num){
+				 return (num+'点击了接听')
+			 }
+    </script>
+</body>
+</html>
