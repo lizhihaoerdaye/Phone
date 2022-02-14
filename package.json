@@ -12,6 +12,6 @@
   },
   "dependencies": {
     "electron-packager": "^13.1.1",
-    "ws": "^7.0.0"
+    "ws": "^7.4.6"
   }
 }
